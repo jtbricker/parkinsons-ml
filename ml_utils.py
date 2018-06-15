@@ -19,7 +19,7 @@ def get_validation_data(columns, use_mean_adjusted_data=False):
     return raw_data[columns]
 
 def svm_grid_search(X_train, X_test, y_train, y_test, cv=5):
-    tuned_parameters = [{'kernel': ['linear'], 'C': [0.001, 0.01, 0.1, 1, 10, 100, 1000]}, {'kernel': ['rbf'], 'C': [1, 10, 100, 1000], 'gamma': [1e-4, 1e-3, 1e-2, 1e-1, 1]}]
+    tuned_parameters = [{'kernel': ['linear'], 'C': [0.001, 0.01, 0.1, 1, 10, 100]}]
 
     print("# Tuning hyper-parameters for f1")
     print()
