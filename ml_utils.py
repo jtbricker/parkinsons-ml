@@ -1,3 +1,4 @@
+import os, sys
 import pandas as pd
 from sklearn import svm
 from sklearn.metrics import classification_report
@@ -72,4 +73,43 @@ def resample_to_equal_class_sizes(X,y):
     df = pd.concat(final_groups)
     return df.drop('group', axis=1).values, df['group'].values
 
-    
+'''
+group_classes:
+    -A method to combine group labels and/or leave out groups in a given dataset
+
+Input:
+    - data: the data which will be grouped
+    - classes: a dictionary where the keys are the classes in data that you want to keep
+        and the values are the desired class label in the returned dataset
+            e.g. {0: 0, 1: 1, 2: 1}
+'''
+def group_classes(data, classes):
+    classes_to_keep = classes.keys()
+    data_to_keep = data.loc[data['GroupID'].isin(classes_to_keep)]
+    classes_to_change = {k:classes[k] for k in classes.keys() if k!= classes[k]}
+    return data_to_keep.replace(to_replace = {'GroupID': classes_to_change})
+
+
+def split_x_and_y(data, y_label='GroupID'):
+    y = data[y_label]
+    x = data.drop(y_label, axis=1)
+    return x, y
+
+
+
+'''
+A class that can be used to supress long print statements
+
+e.g.
+    with HiddenPrints():
+        method_with_long_print_statements()  #doesn't print
+    print("Outside using block")  #prints
+'''
+
+class HiddenPrints:
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = None
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout = self._original_stdout
