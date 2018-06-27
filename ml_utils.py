@@ -5,17 +5,34 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
 from sklearn.utils import resample
 
-def get_training_data():
-    raw_data = pd.read_excel('data/training_data.xlsx')
+def get_training_data(get_full_set=False):
+    if get_full_set:
+        filepath = 'data/all_data.xlsx'
+    else:
+        filepath = 'data/training_data.xlsx'
+        
+    raw_data = pd.read_excel(filepath)
 
-    # remove unneeded subject ID column
-    return raw_data.drop('Subject', axis=1)
+    # remove unneeded subject ID column if it exists
+    if raw_data.get('Subject'):
+        return raw_data.drop('Subject', axis=1)
+    return raw_data
 
-def get_validation_data(columns, use_mean_adjusted_data=False):
+def get_holdout_data():
+    filepath = 'data/holdout_data.xlsx'
+        
+    raw_data = pd.read_excel(filepath)
+
+    # return ony columns in passed-in list and return them in the given order  
+    columns = get_training_data().columns
+    return raw_data[columns]
+
+def get_validation_data(use_mean_adjusted_data=False):
     url = 'data/Validation_2.0.xlsx' if use_mean_adjusted_data else 'data/Validation.xlsx'
     raw_data = pd.read_excel(url)
 
     # return ony columns in passed-in list and return them in the given order  
+    columns = get_training_data().columns
     return raw_data[columns]
 
 def svm_grid_search(X_train, X_test, y_train, y_test, cv=5):
