@@ -5,6 +5,14 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
 from sklearn.utils import resample
 
+from sklearn.svm import SVC
+from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neural_network import MLPClassifier
+
 def get_training_data(get_full_set=False):
     if get_full_set:
         filepath = 'data/all_data.xlsx'
@@ -89,6 +97,21 @@ def resample_to_equal_class_sizes(X,y):
             final_groups.append(group)
     df = pd.concat(final_groups)
     return df.drop('group', axis=1).values, df['group'].values
+
+def get_baseline_models():
+    classifiers = []
+
+    classifiers.append({'name': 'knn', 'model':KNeighborsClassifier(5)})
+    classifiers.append({'name': 'svc_lin', 'model':SVC(kernel='linear', C=0.025)})
+    classifiers.append({'name': 'svc_rbf', 'model':SVC(kernel='rbf', gamma=2, C=1)})
+    classifiers.append({'name': 'rand_for', 'model':RandomForestClassifier(max_depth=5)})
+    classifiers.append({'name': 'ada', 'model':AdaBoostClassifier()})
+    classifiers.append({'name': 'gnb', 'model':GaussianNB()})
+    classifiers.append({'name': 'log', 'model':LogisticRegression(C=1e5)})
+    classifiers.append({'name': 'ann', 'model':MLPClassifier(hidden_layer_sizes=[25,25,25], alpha=1)})
+
+    return classifiers
+
 
 '''
 group_classes:
