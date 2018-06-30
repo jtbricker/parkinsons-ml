@@ -108,7 +108,7 @@ def get_baseline_models():
     classifiers.append({'name': 'ada', 'model':AdaBoostClassifier()})
     classifiers.append({'name': 'gnb', 'model':GaussianNB()})
     classifiers.append({'name': 'log', 'model':LogisticRegression(C=1e5)})
-    classifiers.append({'name': 'ann', 'model':MLPClassifier(hidden_layer_sizes=[25,25,25], alpha=1)})
+    classifiers.append({'name': 'ann', 'model':MLPClassifier(hidden_layer_sizes=[25,25,25], alpha=1, solver='lbfgs')})
 
     return classifiers
 
