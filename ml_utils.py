@@ -13,6 +13,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 
+import matplotlib.pyplot as plt
+
 def get_training_data(get_full_set=False):
     if get_full_set:
         filepath = 'data/all_data.xlsx'
@@ -22,7 +24,7 @@ def get_training_data(get_full_set=False):
     raw_data = pd.read_excel(filepath)
 
     # remove unneeded subject ID column if it exists
-    if raw_data.get('Subject'):
+    if 'Subject' in raw_data.columns:
         return raw_data.drop('Subject', axis=1)
     return raw_data
 
@@ -43,15 +45,30 @@ def get_validation_data(use_mean_adjusted_data=False):
     columns = get_training_data().columns
     return raw_data[columns]
 
-def svm_grid_search(X_train, X_test, y_train, y_test, cv=5):
-    tuned_parameters = [{'kernel': ['linear'], 'C': [0.001, 0.01, 0.1, 1, 10, 100]}]
-
-    print("# Tuning hyper-parameters for f1")
+def unidirectional_grid_search_optimization(model, parameter, parameter_range, X, y, cv=5, scoring='accuracy'):
+    print("# Tuning hyper-parameters for %s" %scoring)
     print()
 
-    clf = GridSearchCV(svm.SVC(), tuned_parameters, cv=cv,
-                       n_jobs = -1 )
-    clf.fit(X_train, y_train)
+    clf = GridSearchCV(model, {parameter: parameter_range}, cv=cv, n_jobs = -1, scoring=scoring, verbose=1)
+    clf.fit(X, y)
+
+    print("Best parameters set found on development set:")
+    print()
+    print(clf.best_params_)
+    means = clf.cv_results_['mean_test_score']
+
+    plt.figure()
+    plot = plt.plot(parameter_range, means, color='black')
+    plt.title(parameter)
+    plt.show()
+    return clf
+
+def grid_search_optimization(model, tuned_parameters, X, y, Xh, yh, Xv, yv, cv=5, scoring='accuracy'):
+    print("# Tuning hyper-parameters for %s" %scoring)
+    print()
+
+    clf = GridSearchCV(model, tuned_parameters, cv=cv, n_jobs = -1, scoring=scoring, verbose=1)
+    clf.fit(X, y)
 
     print("Best parameters set found on development set:")
     print()
@@ -66,12 +83,21 @@ def svm_grid_search(X_train, X_test, y_train, y_test, cv=5):
               % (mean, std * 2, params))
     print()
 
-    print("Detailed classification report:")
+    print("Detailed classification report (holdout):")
     print()
     print("The model is trained on the full development set.")
     print("The scores are computed on the full evaluation set.")
     print()
-    y_true, y_pred = y_test, clf.predict(X_test)
+    y_true, y_pred = yh, clf.predict(Xh)
+    print(classification_report(y_true, y_pred))
+    print()
+    
+    print("Detailed classification report (validation):")
+    print()
+    print("The model is trained on the full development set.")
+    print("The scores are computed on the full evaluation set.")
+    print()
+    y_true, y_pred = yv, clf.predict(Xv)
     print(classification_report(y_true, y_pred))
     print()
     
@@ -153,3 +179,62 @@ class HiddenPrints:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout = self._original_stdout
+
+        
+'''
+A class that can be used as a simple Timer
+'''
+import datetime
+
+class Timer(object):
+    """A simple timer class"""
+    
+    def __init__(self, event):
+        self.event = event
+        pass
+    
+    def __enter__(self):
+        """Starts the timer"""
+        self.start = datetime.datetime.now()
+        print("[%s] Starting %s" %(self.start, self.event))
+        return self.start
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Prints and returns the time elapsed"""
+        self.stop = datetime.datetime.now()
+        
+        time_elapsed = (self.stop-self.start).seconds/60.0
+        print("\r[%s] Done with %s (Took %.3f minutes)" %(datetime.datetime.now(),self.event, time_elapsed))
+        return time_elapsed    
+'''
+A function that returns a new dataframe with new fields for the ratio between each brain region's
+_FA and _FW score values
+
+Input:
+    -df: a dataframe with columns that take the form *_FA and *_FW where * is a brain region
+'''
+def add_fa_fw_ratio(df):
+    brain_regions = [column.split('_')[0] for column in df.columns if "_FA" in column]
+    for region in brain_regions:
+        new_col = region + '_ratio'
+        df[new_col] = df[region+'_FA'] / df[region+'_FW']  
+    return df
+
+
+'''
+A function that get the training, holdout, and validation data, which has been split and resampled already 
+(training data is not resampled, as this should happen in the pipeline for the model to avoid data leakage)
+'''
+def get_training_holdout_validation_data():
+    # get the training data
+    data = get_training_data()
+    X, y = split_x_and_y(data)
+
+    # get the holdout and outside validation data
+    Xh, yh = split_x_and_y(get_holdout_data())
+    Xh, yh = resample_to_equal_class_sizes(Xh, yh)
+
+    Xv, yv = split_x_and_y(get_validation_data())
+    Xv, yv = resample_to_equal_class_sizes(Xv, yv)
+    
+    return X, y, Xh, yh, Xv, yv
