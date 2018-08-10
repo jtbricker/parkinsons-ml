@@ -1,5 +1,6 @@
 import os, sys
 import pandas as pd
+import numpy as np
 from sklearn import svm
 from sklearn.metrics import classification_report
 from sklearn.model_selection import GridSearchCV
@@ -12,6 +13,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
+from xgboost.sklearn import XGBClassifier
 
 import matplotlib.pyplot as plt
 
@@ -24,7 +26,7 @@ def get_training_data(get_full_set=False):
     raw_data = pd.read_excel(filepath)
 
     # remove unneeded subject ID column if it exists
-    if 'Subject' in raw_data.columns:
+    if raw_data.get('Subject'):
         return raw_data.drop('Subject', axis=1)
     return raw_data
 
@@ -37,8 +39,13 @@ def get_holdout_data():
     columns = get_training_data().columns
     return raw_data[columns]
 
-def get_validation_data(use_mean_adjusted_data=False):
-    url = 'data/Validation_2.0.xlsx' if use_mean_adjusted_data else 'data/Validation.xlsx'
+def get_validation_data(use_mean_adjusted_data=False, use_v3 = False):
+    if use_mean_adjusted_data:
+        url = 'data/Validation_2.0.xlsx'
+    elif use_v3:
+        url = 'data/Validation_3.0.xlsx'
+    else:
+        url = 'data/Validation.xlsx'
     raw_data = pd.read_excel(url)
 
     # return ony columns in passed-in list and return them in the given order  
@@ -127,14 +134,93 @@ def resample_to_equal_class_sizes(X,y):
 def get_baseline_models():
     classifiers = []
 
-    classifiers.append({'name': 'knn', 'model':KNeighborsClassifier(5)})
-    classifiers.append({'name': 'svc_lin', 'model':SVC(kernel='linear', C=0.025)})
-    classifiers.append({'name': 'svc_rbf', 'model':SVC(kernel='rbf', gamma=2, C=1)})
-    classifiers.append({'name': 'rand_for', 'model':RandomForestClassifier(max_depth=5)})
-    classifiers.append({'name': 'ada', 'model':AdaBoostClassifier()})
-    classifiers.append({'name': 'gnb', 'model':GaussianNB()})
-    classifiers.append({'name': 'log', 'model':LogisticRegression(C=1e5)})
-    classifiers.append({'name': 'ann', 'model':MLPClassifier(hidden_layer_sizes=[25,25,25], alpha=1, solver='lbfgs')})
+    classifiers.append({
+        'name': 'knn',
+        'model': KNeighborsClassifier(5),
+        'params': {
+            "classifier__weights": ['uniform', 'distance'],
+            "classifier__n_neighbors": range(50, 150, 10),
+            "classifier__p": range(1,10),
+        }
+    })
+    
+    classifiers.append({
+        'name': 'svc_lin',
+        'model': SVC(kernel='linear', C=0.025),
+        'params': { 
+            "classifier__C": np.logspace(0, 0.75, 6)
+        }
+    })
+    
+    classifiers.append({
+        'name': 'svc_rbf',
+        'model': SVC(kernel='rbf', gamma=2, C=1),
+        'params': {
+            "classifier__C": np.logspace(-5,15,10),
+            "classifier__gamma": np.logspace(-15, 3, 10)
+        }
+    })
+    
+    classifiers.append({
+        'name': 'rand_for', 
+        'model': RandomForestClassifier(max_depth=5),
+        'params': {
+            "classifier__n_estimators": range(25,200, 25),
+            #     "classifier__max_features": range(1, 38, 2),
+            #     "classifier__max_depth": range(1, 21, 2),
+            "classifier__min_samples_split": range(2, 20, 2),
+            "classifier__min_samples_leaf": range(1, 25, 3),
+        }
+    })
+    
+    classifiers.append({
+        'name': 'ada', 
+        'model':AdaBoostClassifier(),
+        'params': {
+            "classifier__n_estimators": range(1,401,20),
+            "classifier__learning_rate": np.logspace(-4, -1, 30)
+        }
+    })
+    
+    classifiers.append({
+        'name': 'gnb', 
+        'model':GaussianNB(),
+        'params': {
+            "classifier__priors": [None]
+        }
+    })
+    
+    classifiers.append({
+        'name': 'log', 
+        'model':LogisticRegression(C=1e5),
+        'params' : {
+            "classifier__penalty": ['l1', 'l2'],
+            "classifier__C": np.logspace(0, 6, 30)
+        }
+    })
+    
+    classifiers.append({
+        'name': 'ann', 
+        'model':MLPClassifier(hidden_layer_sizes=[25,25,25], alpha=1, solver='lbfgs'),
+        'params': {
+            "classifier__hidden_layer_sizes": [(100,100),(100,100,100),(100,100,100,100),(100,100,100,100,100)],
+            "classifier__activation": ['identity', 'logistic', 'tanh', 'relu'],
+            "classifier__solver": ['lbfgs', 'sgd', 'adam'],
+            "classifier__alpha":np.logspace(-7, 0, 10),
+        }
+    })
+    
+    classifiers.append({
+        'name': 'xgboost', 
+        'model': XGBClassifier(),
+        'params': {
+            #    "classifier__max_depth": range(5, 26, 4),
+            "classifier__learning_rate": np.logspace(-1, .25, 5),
+            "classifier__n_estimators": range(100, 300, 50),
+            #     "classifier__booster": ['gbtree', 'gblinear', 'dart'],
+            "classifier__gamma": np.logspace(-2, -1, 5),
+        }
+    })
 
     return classifiers
 
@@ -149,11 +235,11 @@ Input:
         and the values are the desired class label in the returned dataset
             e.g. {0: 0, 1: 1, 2: 1}
 '''
-def group_classes(data, classes):
-    classes_to_keep = classes.keys()
+def group_classes(data, grouping):
+    classes_to_keep = grouping.keys()
     data_to_keep = data.loc[data['GroupID'].isin(classes_to_keep)]
-    classes_to_change = {k:classes[k] for k in classes.keys() if k!= classes[k]}
-    return data_to_keep.replace(to_replace = {'GroupID': classes_to_change})
+    classes_to_change = {k:grouping[k] for k in classes_to_keep if k!= grouping[k]}
+    return data_to_keep.replace(classes_to_change)
 
 
 def split_x_and_y(data, y_label='GroupID'):
@@ -224,17 +310,32 @@ def add_fa_fw_ratio(df):
 '''
 A function that get the training, holdout, and validation data, which has been split and resampled already 
 (training data is not resampled, as this should happen in the pipeline for the model to avoid data leakage)
+
+Input:
+    - classes: a dictionary where the keys are the classes in data that you want to keep
+        and the values are the desired class label in the returned dataset
+            e.g. {0: 0, 1: 1, 2: 1}
 '''
-def get_training_holdout_validation_data():
+def get_training_holdout_validation_data(classes = None, use_v3 = False, resample=True):
     # get the training data
     data = get_training_data()
+    if classes:
+        data = group_classes(data, classes)
     X, y = split_x_and_y(data)
 
     # get the holdout and outside validation data
-    Xh, yh = split_x_and_y(get_holdout_data())
-    Xh, yh = resample_to_equal_class_sizes(Xh, yh)
+    holdout_data = get_holdout_data()
+    if classes:
+        holdout_data = group_classes(holdout_data, classes)
+    Xh, yh = split_x_and_y(holdout_data)
+    if resample:
+        Xh, yh = resample_to_equal_class_sizes(Xh, yh)
 
-    Xv, yv = split_x_and_y(get_validation_data())
-    Xv, yv = resample_to_equal_class_sizes(Xv, yv)
+    validation_data = get_validation_data(use_v3=use_v3)
+    if classes:
+        validation_data = group_classes(validation_data, classes)
+    Xv, yv = split_x_and_y(validation_data)
+    if resample:
+        Xv, yv = resample_to_equal_class_sizes(Xv, yv)
     
     return X, y, Xh, yh, Xv, yv

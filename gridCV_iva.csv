@@ -1,0 +1,69 @@
+,model,mean_cv_acc,holdout_acc,validation_acc,cv,best_params,date_modified,variant
+0,knn,0.8985148514851485,0.80625,0.859375,2.0,"{'classifier__n_neighbors': 60, 'classifier__p': 1, 'classifier__weights': 'uniform'}",2018-07-14 19:42:10,
+1,svc_lin,0.8910891089108911,0.79375,0.828125,2.0,{'classifier__C': 1.9952623149688795},2018-07-14 19:42:20,
+2,svc_rbf,0.9009900990099008,0.78125,0.921875,2.0,"{'classifier__C': 0.27825594022071259, 'classifier__gamma': 0.001}",2018-07-14 19:42:30,
+3,rand_for,0.995049504950495,0.8,0.875,2.0,"{'classifier__min_samples_leaf': 1, 'classifier__min_samples_split': 2, 'classifier__n_estimators': 150}",2018-07-14 19:43:21,
+4,ada,0.9183168316831684,0.80625,0.96875,2.0,"{'classifier__learning_rate': 0.014873521072935119, 'classifier__n_estimators': 161}",2018-07-14 19:44:01,
+5,gnb,0.8787128712871287,0.80625,0.9375,2.0,{'classifier__priors': None},2018-07-14 19:44:03,
+6,log,0.8960396039603961,0.8375,0.859375,2.0,"{'classifier__C': 1.6102620275609394, 'classifier__penalty': 'l2'}",2018-07-14 19:44:12,
+7,ann,0.9504950495049505,0.86875,0.859375,2.0,"{'classifier__activation': 'relu', 'classifier__alpha': 1.2000000000000002, 'classifier__hidden_layer_sizes': (100, 100, 100, 100), 'classifier__solver': 'sgd'}",2018-07-14 19:59:19,
+8,xgboost,1.0,0.78125,0.9375,2.0,"{'classifier__gamma': 0.031622776601683791, 'classifier__learning_rate': 0.20535250264571461, 'classifier__n_estimators': 100}",2018-07-14 19:59:33,
+9,knn,0.9133663366336634,0.7375,0.8125,2.0,"{'classifier__n_neighbors': 26, 'classifier__p': 2, 'classifier__weights': 'uniform', 'kbest__k': 37}",2018-07-14 23:47:09,FSS
+10,knn,1.0,0.675,0.6875,2.0,"{'classifier__n_neighbors': 69, 'classifier__p': 1, 'classifier__weights': 'distance', 'kbest__k': 20}",2018-07-15 11:21:41,FSS
+11,svc_lin,0.8910891089108911,0.83125,0.796875,2.0,"{'classifier__C': 2.8183829312644537, 'kbest__k': 15}",2018-07-15 11:24:13,FSS
+12,ada,0.9554455445544554,0.80625,0.90625,2.0,"{'classifier__learning_rate': 0.078804628156699127, 'classifier__n_estimators': 161, 'kbest__k': 30}",2018-07-15 11:32:02,FSS
+13,gnb,0.8762376237623762,0.79375,0.90625,2.0,"{'classifier__priors': None, 'kbest__k': 37}",2018-07-15 11:32:09,FSS
+14,log,0.8638613861386139,0.775,0.9375,2.0,"{'classifier__C': 17.433288221999881, 'classifier__penalty': 'l2', 'kbest__k': 15}",2018-07-15 11:32:19,FSS
+15,rand_for,0.9777227722772276,0.75625,0.859375,2.0,"{'classifier__min_samples_leaf': 1, 'classifier__min_samples_split': 10, 'classifier__n_estimators': 25, 'kbest__k': 37}",2018-07-15 13:22:23,FSS
+16,ann,1.0,0.73125,0.796875,2.0,"{'classifier__activation': 'relu', 'classifier__alpha': 0.4, 'classifier__hidden_layer_sizes': (100, 100, 100), 'classifier__solver': 'adam', 'kbest__k': 15}",2018-07-15 14:52:20,FSS
+17,xgboost,1.0,0.75625,0.796875,2.0,"{'classifier__gamma': 0.10000000000000001, 'classifier__learning_rate': 0.20535250264571461, 'classifier__n_estimators': 250, 'kbest__k': 15}",2018-07-15 14:52:47,FSS
+18,ada,0.9183168316831684,0.83125,0.8783783783783784,2.0,"{'classifier__learning_rate': 0.014873521072935119, 'classifier__n_estimators': 161}",2018-07-18 01:37:59,V3
+19,ann,0.9504950495049505,0.80625,0.8243243243243243,2.0,"{'classifier__activation': 'relu', 'classifier__alpha': 1.2000000000000002, 'classifier__hidden_layer_sizes': (100, 100, 100, 100), 'classifier__solver': 'sgd'}",2018-07-18 01:38:01,V3
+20,gnb,0.8787128712871287,0.80625,0.8918918918918919,2.0,{'classifier__priors': None},2018-07-18 01:38:01,V3
+21,knn,0.8985148514851485,0.78125,0.8243243243243243,2.0,"{'classifier__n_neighbors': 60, 'classifier__p': 1, 'classifier__weights': 'uniform'}",2018-07-18 01:38:01,V3
+22,log,0.8960396039603961,0.8375,0.8513513513513513,2.0,"{'classifier__C': 1.6102620275609394, 'classifier__penalty': 'l2'}",2018-07-18 01:38:01,V3
+23,rand_for,0.995049504950495,0.79375,0.8648648648648649,2.0,"{'classifier__min_samples_leaf': 1, 'classifier__min_samples_split': 2, 'classifier__n_estimators': 150}",2018-07-18 01:38:01,V3
+24,svc_lin,0.8910891089108911,0.8125,0.8378378378378378,2.0,{'classifier__C': 1.9952623149688795},2018-07-18 01:38:01,V3
+25,svc_rbf,0.9009900990099008,0.79375,0.8918918918918919,2.0,"{'classifier__C': 0.27825594022071259, 'classifier__gamma': 0.001}",2018-07-18 01:38:01,V3
+26,xgboost,1.0,0.8125,0.8918918918918919,2.0,"{'classifier__gamma': 0.031622776601683791, 'classifier__learning_rate': 0.20535250264571461, 'classifier__n_estimators': 100}",2018-07-18 01:38:01,V3
+27,ada,0.9554455445544554,0.825,0.8243243243243243,2.0,"{'classifier__learning_rate': 0.078804628156699127, 'classifier__n_estimators': 161, 'kbest__k': 30}",2018-07-18 01:52:32,FSSV3
+28,ann,1.0,0.8125,0.7432432432432432,2.0,"{'classifier__activation': 'relu', 'classifier__alpha': 0.4, 'classifier__hidden_layer_sizes': (100, 100, 100), 'classifier__solver': 'adam', 'kbest__k': 15}",2018-07-18 01:52:34,FSSV3
+29,gnb,0.8762376237623762,0.8125,0.8243243243243243,2.0,"{'classifier__priors': None, 'kbest__k': 37}",2018-07-18 01:52:34,FSSV3
+30,knn,0.9133663366336634,0.75625,0.7432432432432432,2.0,"{'classifier__n_neighbors': 26, 'classifier__p': 2, 'classifier__weights': 'uniform', 'kbest__k': 37}",2018-07-18 01:52:34,FSSV3
+31,log,0.8638613861386139,0.8,0.8243243243243243,2.0,"{'classifier__C': 17.433288221999881, 'classifier__penalty': 'l2', 'kbest__k': 15}",2018-07-18 01:52:34,FSSV3
+32,rand_for,0.9777227722772276,0.79375,0.8243243243243243,2.0,"{'classifier__min_samples_leaf': 1, 'classifier__min_samples_split': 10, 'classifier__n_estimators': 25, 'kbest__k': 37}",2018-07-18 01:52:34,FSSV3
+33,svc_lin,0.8910891089108911,0.81875,0.8243243243243243,2.0,"{'classifier__C': 2.8183829312644537, 'kbest__k': 15}",2018-07-18 01:52:34,FSSV3
+34,xgboost,1.0,0.79375,0.7972972972972973,2.0,"{'classifier__gamma': 0.10000000000000001, 'classifier__learning_rate': 0.20535250264571461, 'classifier__n_estimators': 250, 'kbest__k': 15}",2018-07-18 01:52:34,FSSV3
+35,gnb,0.8910891089108911,0.7875,0.875,2.0,"{'classifier__priors': None, 'pca__n_components': 4}",2018-07-18 02:52:12,PCA
+36,gnb,0.8762376237623762,0.78125,0.90625,2.0,"{'classifier__priors': None, 'pca__n_components': 5}",2018-07-18 02:55:44,PCA
+37,log,0.8985148514851485,0.8375,0.796875,5.0,"{'classifier__C': 2.5929437974046672, 'classifier__penalty': 'l2'}",2018-07-20 17:36:44,5FOLD
+38,rand_for,0.9826732673267328,0.7625,0.8125,5.0,"{'classifier__min_samples_leaf': 1, 'classifier__min_samples_split': 12, 'classifier__n_estimators': 25}",2018-07-20 21:49:00,5FOLD
+39,log,0.9009900990099008,0.85625,0.75,5.0,"{'classifier__C': 1.6102620275609394, 'classifier__penalty': 'l1'}",2018-07-20 21:49:08,5FOLD
+40,ann,1.0,0.7625,0.703125,5.0,"{'classifier__activation': 'logistic', 'classifier__alpha': 0.2, 'classifier__hidden_layer_sizes': (100, 100), 'classifier__solver': 'lbfgs'}",2018-07-20 22:25:58,5FOLD
+41,rand_for,0.9801980198019802,0.80625,0.921875,10.0,"{'classifier__min_samples_leaf': 4, 'classifier__min_samples_split': 2, 'classifier__n_estimators': 175}",2018-07-21 00:50:03,10FOLD
+42,log,0.8960396039603961,0.86875,0.828125,10.0,"{'classifier__C': 13738.237958832638, 'classifier__penalty': 'l1'}",2018-07-21 00:50:13,10FOLD
+43,ann,1.0,0.85,0.828125,10.0,"{'classifier__activation': 'relu', 'classifier__alpha': 0.7000000000000001, 'classifier__hidden_layer_sizes': (100, 100), 'classifier__solver': 'adam'}",2018-07-21 02:09:13,10FOLD
+44,rand_for,0.9876237623762376,0.75,0.84375,20.0,"{'classifier__min_samples_leaf': 4, 'classifier__min_samples_split': 2, 'classifier__n_estimators': 150}",2018-07-21 15:48:24,20FOLD
+45,log,0.9084158415841584,0.8125,0.71875,20.0,"{'classifier__C': 1.0, 'classifier__penalty': 'l2'}",2018-07-21 15:48:36,20FOLD
+46,ann,1.0,0.81875,0.765625,20.0,"{'classifier__activation': 'relu', 'classifier__alpha': 0.2, 'classifier__hidden_layer_sizes': (100, 100), 'classifier__solver': 'adam'}",2018-07-21 18:11:39,20FOLD
+47,rand_for,0.9876237623762376,0.79375,0.828125,30.0,"{'classifier__min_samples_leaf': 1, 'classifier__min_samples_split': 10, 'classifier__n_estimators': 150}",2018-07-22 04:42:08,30FOLD
+48,log,0.9009900990099008,0.79375,0.734375,30.0,"{'classifier__C': 4.1753189365604015, 'classifier__penalty': 'l1'}",2018-07-22 04:42:21,30FOLD
+49,ann,1.0,0.84375,0.734375,30.0,"{'classifier__activation': 'relu', 'classifier__alpha': 0.7000000000000001, 'classifier__hidden_layer_sizes': (100, 100), 'classifier__solver': 'adam'}",2018-07-22 08:35:18,30FOLD
+50,rand_for,0.99009900990099,0.81875,0.8125,2.0,"{'classifier__min_samples_leaf': 1, 'classifier__min_samples_split': 6, 'classifier__n_estimators': 150}",2018-07-25 11:21:22,2FOLDMCC
+51,log,0.9009900990099008,0.88125,0.796875,2.0,"{'classifier__C': 1.0, 'classifier__penalty': 'l1'}",2018-07-25 11:21:31,2FOLDMCC
+52,ann,1.0,0.8,0.796875,2.0,"{'classifier__activation': 'relu', 'classifier__alpha': 9.9999999999999995e-08, 'classifier__hidden_layer_sizes': (100, 100, 100, 100, 100), 'classifier__solver': 'lbfgs'}",2018-07-25 11:25:49,2FOLDMCC
+53,rand_for,0.99009900990099,0.7625,0.75,2.0,"{'classifier__min_samples_leaf': 1, 'classifier__min_samples_split': 12, 'classifier__n_estimators': 175}",2018-07-25 12:07:20,2FOLDMCC
+54,log,0.8861386138613861,0.85,0.8125,2.0,"{'classifier__C': 1.0, 'classifier__penalty': 'l1'}",2018-07-25 12:07:29,2FOLDMCC
+55,ann,1.0,0.7875,0.703125,2.0,"{'classifier__activation': 'relu', 'classifier__alpha': 0.02782559402207126, 'classifier__hidden_layer_sizes': (100, 100, 100, 100), 'classifier__solver': 'adam'}",2018-07-25 12:12:11,2FOLDMCC
+56,knn,1.0,0.75625,0.75,2.0,"{'classifier__n_neighbors': 26, 'classifier__p': 1, 'classifier__weights': 'distance'}",2018-07-25 12:27:33,2FOLDMCC
+57,svc_lin,0.9183168316831684,0.85,0.65625,2.0,{'classifier__C': 1.4125375446227544},2018-07-25 12:27:41,2FOLDMCC
+58,svc_rbf,0.9009900990099008,0.75625,0.75,2.0,"{'classifier__C': 1291549.6650148828, 'classifier__gamma': 1.0000000000000001e-09}",2018-07-25 12:27:51,2FOLDMCC
+59,rand_for,0.9653465346534652,0.7625,0.875,2.0,"{'classifier__min_samples_leaf': 4, 'classifier__min_samples_split': 8, 'classifier__n_estimators': 125}",2018-07-25 12:28:33,2FOLDMCC
+60,ada,0.9133663366336634,0.83125,0.9375,2.0,"{'classifier__learning_rate': 0.018873918221350976, 'classifier__n_estimators': 121}",2018-07-25 12:29:07,2FOLDMCC
+61,gnb,0.8737623762376238,0.79375,0.921875,2.0,{'classifier__priors': None},2018-07-25 12:29:10,2FOLDMCC
+62,log,0.9009900990099008,0.8625,0.75,2.0,"{'classifier__C': 1.6102620275609394, 'classifier__penalty': 'l2'}",2018-07-25 12:29:19,2FOLDMCC
+63,ann,1.0,0.86875,0.625,2.0,"{'classifier__activation': 'relu', 'classifier__alpha': 9.9999999999999995e-08, 'classifier__hidden_layer_sizes': (100, 100), 'classifier__solver': 'adam'}",2018-07-25 12:33:59,2FOLDMCC
+64,xgboost,1.0,0.74375,0.921875,2.0,"{'classifier__gamma': 0.10000000000000001, 'classifier__learning_rate': 0.10000000000000001, 'classifier__n_estimators': 150}",2018-07-25 12:34:12,2FOLDMCC
+65,ada,0.8935643564356436,0.83125,0.9375,2.0,"{'classifier__learning_rate': 0.0072789538439831459, 'classifier__n_estimators': 121}",2018-07-25 12:40:32,2FOLDMCC
+66,ada,0.905940594059406,0.825,0.890625,10.0,"{'classifier__learning_rate': 0.018873918221350976, 'classifier__n_estimators': 181}",2018-07-25 12:55:36,10FOLDMCC
+67,ada,0.9306930693069307,0.8529411764705882,0.9,10.0,"{'classifier__learning_rate': 0.030391953823131979, 'classifier__n_estimators': 181}",2018-07-25 13:13:56,10FOLDMCC

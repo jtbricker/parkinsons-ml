@@ -1,0 +1,10 @@
+,model,mean_cv_acc,holdout_acc,validation_acc,cv,best_params,date_modified
+0,svc_lin,0.9504950495049505,0.6333333333333333,0.59375,2,{'classifier__C': 1.0},2018-07-12 15:34:18
+1,log,0.8762376237623762,0.6958333333333333,0.7395833333333334,2,"{'classifier__C': 1.6102620275609394, 'classifier__penalty': 'l1'}",2018-07-12 15:34:40
+2,svc_rbf,0.8712871287128713,0.625,0.6041666666666666,2,"{'classifier__C': 7742.6368268112774, 'classifier__gamma': 9.9999999999999994e-12}",2018-07-12 15:34:49
+3,knn,1.0,0.7166666666666667,0.6041666666666666,2,"{'classifier__n_neighbors': 100, 'classifier__p': 1, 'classifier__weights': 'distance'}",2018-07-12 15:35:10
+4,rand_for,0.9777227722772276,0.6625,0.6041666666666666,2,"{'classifier__min_samples_leaf': 1, 'classifier__min_samples_split': 2, 'classifier__n_estimators': 50}",2018-07-12 15:35:47
+5,ann,0.99009900990099,0.6958333333333333,0.5625,2,"{'classifier__activation': 'relu', 'classifier__alpha': 0.4, 'classifier__hidden_layer_sizes': (100, 100, 100, 100, 100), 'classifier__solver': 'sgd'}",2018-07-12 15:51:16
+6,gnb,0.8465346534653465,0.6958333333333333,0.6875,2,{'classifier__priors': None},2018-07-12 15:51:18
+7,ada,0.8886138613861386,0.6375,0.65625,2,"{'classifier__learning_rate': 0.038566204211634723, 'classifier__n_estimators': 161}",2018-07-12 15:51:51
+8,xgboost,1.0,0.6458333333333334,0.5729166666666666,2,"{'classifier__gamma': 0.031622776601683791, 'classifier__learning_rate': 0.42169650342858223, 'classifier__max_depth': 25, 'classifier__n_estimators': 100}",2018-07-12 15:53:34
