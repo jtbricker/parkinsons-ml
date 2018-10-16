@@ -8,32 +8,35 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from xgboost.sklearn import XGBClassifier
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.ensemble import GradientBoostingClassifier
+
 
 from pml.experiment.model import Model
 
 def get_baseline_models():
     return [ 
-        # Model(
-        #     name='knn', model=KNeighborsClassifier(),
-        #     parameter_grid= {
-        #         "classifier__weights": ['uniform', 'distance'],
-        #         "classifier__n_neighbors": range(50, 150, 10),
-        #         "classifier__p": range(1,10),
-        #     }
-        # ),
+        Model(
+            name='knn', model=KNeighborsClassifier(),
+            parameter_grid= {
+                "classifier__weights": ['uniform', 'distance'],
+                "classifier__n_neighbors": range(50, 150, 10),
+                "classifier__p": range(1,10),
+            }
+        ),
         Model(
             name='svc_lin', model=SVC(kernel='linear'),
             parameter_grid= {
                 "classifier__C": np.logspace(0, 0.75, 6)
             }
         ),
-        # Model(
-        #     name='svc_rbf', model=SVC(kernel='rbf', gamma=2, C=1),
-        #     parameter_grid= {
-        #         "classifier__C": np.logspace(-5,15,10),
-        #         "classifier__gamma": np.logspace(-15, 3, 10)
-        #     }
-        # ),
+        Model(
+            name='svc_rbf', model=SVC(kernel='rbf'),
+            parameter_grid= {
+                "classifier__C": np.logspace(-5,15,10),
+                "classifier__gamma": np.logspace(-15, 3, 10)
+            }
+        ),
         Model(
             name='rand_for', model=RandomForestClassifier(),
             parameter_grid= {
@@ -44,19 +47,19 @@ def get_baseline_models():
                 "classifier__min_samples_leaf": range(1, 25, 3),
             }
         ),
-        # Model(
-        #     name='ada', model=AdaBoostClassifier(),
-        #     parameter_grid= {
-        #         "classifier__n_estimators": range(1,401,20),
-        #         "classifier__learning_rate": np.logspace(-4, -1, 30)
-        #     }
-        # ),
-        # Model(
-        #     name='gnb', model=GaussianNB(),
-        #     parameter_grid= {
-        #         "classifier__priors": [None]
-        #     }
-        # ),
+        Model(
+            name='ada', model=AdaBoostClassifier(),
+            parameter_grid= {
+                "classifier__n_estimators": range(1,401,20),
+                "classifier__learning_rate": np.logspace(-4, -1, 30)
+            }
+        ),
+        Model(
+            name='gnb', model=GaussianNB(),
+            parameter_grid= {
+                "classifier__priors": [None]
+            }
+        ),
         Model(
             name='log', model=LogisticRegression(),
             parameter_grid= {
@@ -73,14 +76,22 @@ def get_baseline_models():
                 "classifier__alpha":np.logspace(-7, 0, 10),
             }
         ),
-        # Model(
-        #     name='xgboost', model=XGBClassifier(),
-        #     parameter_grid= {
-        #         #    "classifier__max_depth": range(5, 26, 4),
-        #         "classifier__learning_rate": np.logspace(-1, .25, 5),
-        #         "classifier__n_estimators": range(100, 300, 50),
-        #         #     "classifier__booster": ['gbtree', 'gblinear', 'dart'],
-        #         "classifier__gamma": np.logspace(-2, -1, 5),
-        #     }
-        # )
+        Model(
+            name='xgboost', model=XGBClassifier(),
+            parameter_grid= {
+                #    "classifier__max_depth": range(5, 26, 4),
+                "classifier__learning_rate": np.logspace(-1, .25, 5),
+                "classifier__n_estimators": range(100, 300, 50),
+                #     "classifier__booster": ['gbtree', 'gblinear', 'dart'],
+                "classifier__gamma": np.logspace(-2, -1, 5),
+            }
+        ),
+        Model(
+            name='lda', model=LinearDiscriminantAnalysis(),
+            parameter_grid= {}
+        ),
+        Model(
+            name='gradientboost', model=GradientBoostingClassifier(),
+            parameter_grid= {}
+        ),
     ]
